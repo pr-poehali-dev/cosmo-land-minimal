@@ -1,11 +1,119 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import Icon from '@/components/ui/icon';
+
+const Snowflake = ({ delay, duration, left }: { delay: number; duration: number; left: string }) => (
+  <div
+    className="absolute text-white/30 text-2xl pointer-events-none animate-snowfall"
+    style={{
+      left,
+      animationDelay: `${delay}s`,
+      animationDuration: `${duration}s`,
+    }}
+  >
+    ❄
+  </div>
+);
 
 const Index = () => {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    setVisible(true);
+  }, []);
+
+  const snowflakes = Array.from({ length: 20 }, (_, i) => ({
+    id: i,
+    delay: Math.random() * 5,
+    duration: 10 + Math.random() * 10,
+    left: `${Math.random() * 100}%`,
+  }));
+
+  const buttons = [
+    { name: 'ОПЕРАТОР', icon: 'Headphones', url: 'https://t.me/operator' },
+    { name: 'ЧАТ', icon: 'MessageCircle', url: 'https://t.me/chat' },
+    { name: 'КАНАЛ', icon: 'Radio', url: 'https://t.me/channel' },
+    { name: 'БОТ', icon: 'Bot', url: 'https://t.me/bot' },
+  ];
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4 color-black text-black">Добро пожаловать!</h1>
-        <p className="text-xl text-gray-600">тут будет отображаться ваш проект</p>
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-cosmic-dark via-cosmic-dark to-[#0f1419] flex items-center justify-center p-4">
+      {snowflakes.map((flake) => (
+        <Snowflake
+          key={flake.id}
+          delay={flake.delay}
+          duration={flake.duration}
+          left={flake.left}
+        />
+      ))}
+
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {Array.from({ length: 50 }).map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-white animate-twinkle"
+            style={{
+              width: Math.random() * 3 + 1 + 'px',
+              height: Math.random() * 3 + 1 + 'px',
+              top: Math.random() * 100 + '%',
+              left: Math.random() * 100 + '%',
+              animationDelay: Math.random() * 2 + 's',
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="relative z-10 text-center max-w-2xl w-full">
+        <div
+          className={`transition-all duration-1000 ${
+            visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
+          <div className="mb-8 animate-float">
+            <div className="inline-block relative">
+              <h1 className="text-7xl md:text-8xl font-bold text-white mb-2 tracking-wider font-montserrat">
+                COSMO
+              </h1>
+              <div className="absolute -top-4 -right-4 text-4xl animate-twinkle">✨</div>
+            </div>
+            <div className="h-1 w-32 bg-gradient-to-r from-cosmic-ice to-cosmic-gold mx-auto rounded-full animate-glow" />
+            <h2 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-cosmic-ice via-white to-cosmic-gold bg-clip-text text-transparent mt-2 font-montserrat">
+              LAND
+            </h2>
+          </div>
+
+          <p className="text-cosmic-ice/80 text-lg mb-12 font-roboto">
+            Откройте двери в космический мир возможностей ❄️
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-md mx-auto">
+            {buttons.map((btn, index) => (
+              <a
+                key={btn.name}
+                href={btn.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`transition-all duration-300 ${
+                  visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                }`}
+                style={{ transitionDelay: `${(index + 1) * 150}ms` }}
+              >
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full h-16 text-lg font-semibold bg-cosmic-dark/50 border-2 border-cosmic-ice/30 text-white hover:bg-cosmic-ice/20 hover:border-cosmic-ice hover:scale-105 hover:shadow-[0_0_20px_rgba(14,165,233,0.5)] transition-all duration-300 backdrop-blur-sm font-roboto group"
+                >
+                  <Icon name={btn.icon as any} className="mr-2 group-hover:animate-pulse" size={24} />
+                  {btn.name}
+                </Button>
+              </a>
+            ))}
+          </div>
+
+          <div className="mt-12 text-cosmic-gold/60 text-sm font-roboto animate-twinkle">
+            🎄 С наступающим Новым Годом! 🎄
+          </div>
+        </div>
       </div>
     </div>
   );
