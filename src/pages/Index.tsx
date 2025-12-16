@@ -15,6 +15,45 @@ const Snowflake = ({ delay, duration, left }: { delay: number; duration: number;
   </div>
 );
 
+const FlyingSanta = ({ delay, top }: { delay: number; top: string }) => (
+  <div
+    className="absolute text-4xl pointer-events-none animate-fly-santa z-20"
+    style={{
+      top,
+      animationDelay: `${delay}s`,
+    }}
+  >
+    🎅🛷
+  </div>
+);
+
+const ChristmasLights = ({ count = 8 }: { count?: number }) => {
+  const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+  
+  return (
+    <div className="absolute inset-0 pointer-events-none">
+      {Array.from({ length: count }).map((_, i) => {
+        const angle = (360 / count) * i;
+        const color = colors[i % colors.length];
+        
+        return (
+          <div
+            key={i}
+            className="absolute w-2 h-2 rounded-full animate-lights"
+            style={{
+              background: color,
+              boxShadow: `0 0 10px ${color}, 0 0 20px ${color}`,
+              left: `${50 + 48 * Math.cos((angle * Math.PI) / 180)}%`,
+              top: `${50 + 48 * Math.sin((angle * Math.PI) / 180)}%`,
+              animationDelay: `${i * 0.2}s`,
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+};
+
 const Index = () => {
   const [visible, setVisible] = useState(false);
 
@@ -27,6 +66,12 @@ const Index = () => {
     delay: Math.random() * 5,
     duration: 10 + Math.random() * 10,
     left: `${Math.random() * 100}%`,
+  }));
+
+  const santas = Array.from({ length: 3 }, (_, i) => ({
+    id: i,
+    delay: i * 7,
+    top: `${20 + Math.random() * 40}%`,
   }));
 
   const buttons = [
@@ -45,6 +90,10 @@ const Index = () => {
           duration={flake.duration}
           left={flake.left}
         />
+      ))}
+
+      {santas.map((santa) => (
+        <FlyingSanta key={santa.id} delay={santa.delay} top={santa.top} />
       ))}
 
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -98,14 +147,17 @@ const Index = () => {
                 }`}
                 style={{ transitionDelay: `${(index + 1) * 150}ms` }}
               >
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full h-16 text-lg font-semibold bg-cosmic-dark/50 border-2 border-cosmic-ice/30 text-white hover:bg-cosmic-ice/20 hover:border-cosmic-ice hover:scale-105 hover:shadow-[0_0_20px_rgba(14,165,233,0.5)] transition-all duration-300 backdrop-blur-sm font-roboto group"
-                >
-                  <Icon name={btn.icon as any} className="mr-2 group-hover:animate-pulse" size={24} />
-                  {btn.name}
-                </Button>
+                <div className="relative">
+                  <ChristmasLights count={12} />
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full h-16 text-lg font-semibold bg-cosmic-dark/50 border-2 border-cosmic-ice/30 text-white hover:bg-cosmic-ice/20 hover:border-cosmic-ice hover:scale-105 hover:shadow-[0_0_20px_rgba(14,165,233,0.5)] transition-all duration-300 backdrop-blur-sm font-roboto group relative z-10"
+                  >
+                    <Icon name={btn.icon as any} className="mr-2 group-hover:animate-pulse" size={24} />
+                    {btn.name}
+                  </Button>
+                </div>
               </a>
             ))}
           </div>

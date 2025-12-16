@@ -114,6 +114,16 @@ export default {
 				'glow': {
 					'0%, 100%': { boxShadow: '0 0 5px rgba(14, 165, 233, 0.5)' },
 					'50%': { boxShadow: '0 0 20px rgba(14, 165, 233, 0.8)' }
+				},
+				'fly-santa': {
+					'0%': { transform: 'translateX(-100px) translateY(0px)', opacity: '0' },
+					'5%': { opacity: '1' },
+					'95%': { opacity: '1' },
+					'100%': { transform: 'translateX(calc(100vw + 100px)) translateY(-50px)', opacity: '0' }
+				},
+				'lights': {
+					'0%, 100%': { opacity: '1', filter: 'brightness(1)' },
+					'50%': { opacity: '0.6', filter: 'brightness(1.5)' }
 				}
 			},
 			animation: {
@@ -123,7 +133,9 @@ export default {
 				'float': 'float 3s ease-in-out infinite',
 				'snowfall': 'snowfall linear infinite',
 				'twinkle': 'twinkle 2s ease-in-out infinite',
-				'glow': 'glow 2s ease-in-out infinite'
+				'glow': 'glow 2s ease-in-out infinite',
+				'fly-santa': 'fly-santa 15s linear infinite',
+				'lights': 'lights 1.5s ease-in-out infinite'
 			}
 		}
 	},
